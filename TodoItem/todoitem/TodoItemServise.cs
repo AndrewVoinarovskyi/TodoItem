@@ -1,35 +1,28 @@
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TodoItem
 {
     public class TodoItemService
     {
-        List<TodoItem> todoItems = new List<TodoItem>() {
-            new TodoItem{Id = 1, Title = "First todo"},
-            new TodoItem{Id = 2, Title = "Second todo"},
+        private List<TodoItem> todoItems = new List<TodoItem> {
+        new TodoItem() { Id = 1, Title = "Implement read" },
+        new TodoItem() { Id = 2, Title = "Implement create" }
         };
         private int lastId = 2;
-        TodoItem todoItem;
 
         public List<TodoItem> GetAll()
         {
             return todoItems;
         }
 
-        public TodoItem Create(TodoItem model)
+        public TodoItem Create(TodoItem item)
         {
-            TodoItem todoItem = new TodoItem
-            {
-                Id = ++lastId,
-                Title = model.Title,
-                Description = model.Description,
-                DueDate = model.DueDate,
-                Done = model.Done,
-            };
-
-            todoItems.Add(todoItem);
-            return todoItem;
+            item.Id = ++lastId;
+            todoItems.Add(item);
+            return item;
         }
 
         public TodoItem GetById(int id)
@@ -38,10 +31,38 @@ namespace TodoItem
             {
                 if(item.Id == id)
                 {
-                    todoItem = item;
+                    return item;
                 }
             }
-            return todoItem;
+            return null;
+        }
+
+        internal TodoItem Change(int id, TodoItem model)
+        {
+            foreach (TodoItem item in todoItems)
+            {
+                if(item.Id == id)
+                {
+                    item.Title = model.Title;
+                    item.Description = model.Description;
+                    item.DueDate = model.DueDate;
+                    item.Done = model.Done;
+                    return item;
+                }
+            }
+            return null;
+        }
+
+        internal List<TodoItem> Delete(int id)
+        {
+            foreach (TodoItem item in todoItems)
+            {
+                if(item.Id == id)
+                {
+                    todoItems.Remove(item);
+                }
+            }
+            return todoItems;
         }
     }
 }

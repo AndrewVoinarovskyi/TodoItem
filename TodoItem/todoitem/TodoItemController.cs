@@ -11,48 +11,47 @@ namespace TodoItem.Controllers
     [ApiController]
     public class TodoItemController : ControllerBase
     {
-        TodoItemService TodoItemService { get; set; }
+        private TodoItemService service;
 
         public TodoItemController(TodoItemService service)
         {
-            this.TodoItemService = service;
+            this.service = service;
         }
 
         [HttpGet]
         public List<TodoItem> GetTodoItems()
         {
 
-            return TodoItemService.GetAll();
+            return service.GetAll();
         }
 
         [HttpGet("{id}")]
         public ActionResult<TodoItem> GetTodoItemById(int id)
         {
-            return TodoItemService.GetById(id);
+            return service.GetById(id);
         }
 
         [HttpPost("")]
         public ActionResult<TodoItem> PostTodoItem(TodoItem model)
         {
-            TodoItem todoItem = TodoItemService.Create(model);
+            TodoItem todoItem = service.Create(model);
 
             return Created($"api/todoItem/{todoItem.Id}", todoItem);
         }
 
         [HttpPut("{id}")]
-        public  Task<IActionResult> PutTodoItem(int id, TodoItem model)
+        public  TodoItem PutTodoItem(int id, TodoItem model)
         {
 
-
-            return null;
+            return service.Change(id, model);
         }
 
         [HttpDelete("{id}")]
-        public ActionResult<TodoItem> DeleteTodoItemById(int id)
+        public List<TodoItem> DeleteTodoItemById(int id)
         {
 
 
-            return null;
+            return service.Delete(id);
         }
     }
 }
