@@ -7,26 +7,45 @@ namespace TodoItem
 {
     public class TodoItemService
     {
-        private List<TodoItem> todoItems = new List<TodoItem> {
-        new TodoItem() { Id = 1, Title = "Implement read" },
-        new TodoItem() { Id = 2, Title = "Implement create" }
+        private List<List<TodoItem>> todoLists = new List<List<TodoItem>> {
+            new List<TodoItem> {
+                new TodoItem() { Id = 1, Title = "Implement read" },
+                new TodoItem() { Id = 2, Title = "Implement create" }
+            },
+            new List<TodoItem> {
+                new TodoItem() { Id = 1, Title = "First in second" },
+                new TodoItem() { Id = 2, Title = "Second in second" }
+            }
         };
+
+
+        private List<TodoItem> todoItems;
+
+        // private List<TodoItem> todoItems = new List<TodoItem> {
+        // new TodoItem() { Id = 1, Title = "Implement read" },
+        // new TodoItem() { Id = 2, Title = "Implement create" }
+        // };
+
+        
         private int lastId = 2;
 
-        public List<TodoItem> GetAll()
+        public List<TodoItem> GetAll(int listId)
         {
-            return todoItems;
+            
+            return todoLists[listId - 1];
         }
 
-        public TodoItem Create(TodoItem item)
+        public TodoItem Create(int listId, TodoItem item)
         {
+            todoItems = todoLists[listId - 1];
             item.Id = ++lastId;
             todoItems.Add(item);
             return item;
         }
 
-        public TodoItem GetById(int id)
+        public TodoItem GetById(int listId, int id)
         {
+            todoItems = todoLists[listId - 1];
             foreach (TodoItem item in todoItems)
             {
                 if(item.Id == id)
@@ -37,8 +56,9 @@ namespace TodoItem
             return null;
         }
 
-        internal TodoItem Change(int id, TodoItem model)
+        internal TodoItem Change(int listId, int id, TodoItem model)
         {
+            todoItems = todoLists[listId - 1];
             foreach (TodoItem item in todoItems)
             {
                 if(item.Id == id)
@@ -53,8 +73,9 @@ namespace TodoItem
             return null;
         }
 
-        internal List<TodoItem> Delete(int id)
+        internal List<TodoItem> Delete(int listId, int id)
         {
+            todoItems = todoLists[listId - 1];
             foreach (TodoItem item in todoItems)
             {
                 if(item.Id == id)

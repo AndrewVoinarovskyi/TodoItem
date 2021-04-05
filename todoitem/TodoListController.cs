@@ -7,13 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TodoItem.Controllers
 {
-    [Route("api/TodoList/{listId}/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class TodoItemController : ControllerBase
+    public class TodoListController : ControllerBase
     {
         private TodoItemService service;
-
-        public TodoItemController(TodoItemService service)
+        public TodoListController(TodoItemService service)
         {
             this.service = service;
         }
